@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .btn-primary {
+    @apply inline-flex cursor-pointer items-center rounded-md bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-75;
+  }
+  .hyperlink {
+    @apply text-blue-600 no-underline dark:text-blue-300;
+  }
+}
