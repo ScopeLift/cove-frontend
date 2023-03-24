@@ -1,4 +1,5 @@
 import { Head } from '@/components/layout/Head';
+import { Header } from '@/components/layout/Header';
 import { SITE_DESCRIPTION } from '@/lib/constants';
 
 const Home = () => {

@@ -2,6 +2,7 @@ import * as React from 'react';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import Layout from '@/components/layout/Layout';
+import '../styles/prism.css';
 import '@/styles/globals.css';
 
 function App({ Component, pageProps }: AppProps) {

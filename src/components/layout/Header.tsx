@@ -28,7 +28,7 @@ export const Header = () => {
       <div className='hidden md:flex md:flex-1 md:items-center md:justify-between'>
         <div className='flex space-x-10'>
           <NavLink path='/about' label='About' />
-          <NavLink path='/do-stuff' label='Do Stuff' />
+          <NavLink path='/mainnet/0x42' label='View Contract' />
         </div>
       </div>
     </div>
