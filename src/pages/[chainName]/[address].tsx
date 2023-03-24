@@ -16,7 +16,7 @@ const Contract = () => {
       <div>chain: {chainName}</div>
       <div>contract: {address}</div>
       <pre>
-        <code className="language-solidity">
+        <code className="language-javascript">
           {`
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity =0.7.6;
