@@ -29,7 +29,7 @@ jobs:
           node-version: 18.12.1
           cache: 'yarn'
       - name: Install Yarn
-      - run: corepack enable |
+        run: corepack enable |
           corepack prepare yarn@3.5.0 --activate
       - run: yarn install
       - run: yarn fmt:check
