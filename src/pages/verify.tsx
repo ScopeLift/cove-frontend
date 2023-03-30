@@ -80,7 +80,7 @@ const Verify: React.FC = () => {
       </button>
       {result && (
         <pre style={{ maxWidth: '100vw', overflowX: 'auto' }}>
-          <code className='language-json' id='json'>
+          <code className='language-json text-black dark:text-white' id='json'>
             {result ? JSON.stringify(result, null, 2) : ''}
           </code>
         </pre>
