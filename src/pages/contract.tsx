@@ -27,12 +27,12 @@ export default function ContractFormPage() {
   return (
     <form onSubmit={handleSubmit} className='mt-80 flex flex-col items-center justify-center'>
       <div className='w-1/2'>
-        <div>
+        <div className='my-3'>
           <label htmlFor='address'>Chain:</label>
           <select
             id='location'
             name='chain'
-            className='mt-2 block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 dark:text-white sm:text-sm sm:leading-6'
+            className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:text-white sm:text-sm sm:leading-6'
             defaultValue='Polygon'
             value={formData.chain}
             onChange={(e) => setFormData({ ...formData, chain: e.target.value })}
@@ -44,7 +44,7 @@ export default function ContractFormPage() {
             <option value='goerli'>Goerli</option>
           </select>
         </div>
-        <div>
+        <div className='my-3'>
           <label htmlFor='address'>Address:</label>
           <input
             type='text'
@@ -55,9 +55,9 @@ export default function ContractFormPage() {
             onChange={handleInputChange}
           />
         </div>
-        <div className='flex justify-center'>
+        <div className='my-6 flex justify-center'>
           <button
-            className='rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:text-white'
+            className='rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
             type='submit'
           >
             Submit
