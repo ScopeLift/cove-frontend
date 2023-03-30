@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-solidity';
+import { Footer } from '@/components/layout/Footer';
 import { Head } from '@/components/layout/Head';
 import { getChainIdFromName } from '@/utils';
 
