@@ -21,11 +21,15 @@ export const Header = () => {
       <div>
         <Link href='/' className='flex'>
           <span className='sr-only'>{COMPANY_NAME}</span>
-          <Image className='h-8 w-auto rounded-full sm:h-10' src={logo} alt='logo' />
+          <Image
+            className='h-8 w-auto rounded-full bg-gray-600 p-1 sm:h-10'
+            src={logo}
+            alt='logo'
+          />
         </Link>
       </div>
 
-      <div className='hidden md:flex md:flex-1 md:items-center md:justify-between'>
+      <div className='md:flex md:flex-1 md:items-center md:justify-between'>
         <div className='flex space-x-10'>
           <NavLink path='/about' label='About' />
           <NavLink path='/verify' label='Verify Contract' />
