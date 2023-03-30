@@ -64,9 +64,7 @@ const Contract = () => {
 
       <h1 className='mt-4 text-xl'>Source Code</h1>
       <pre>
-        <code className='language-solidity'>
-          {result?.solidity}
-        </code>
+        <code className='language-solidity'>{result?.solidity}</code>
       </pre>
     </>
   );
