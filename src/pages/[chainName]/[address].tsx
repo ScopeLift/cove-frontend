@@ -59,15 +59,13 @@ const Contract = () => {
 
       <h1 className='mt-4 text-xl'>ABI</h1>
       <pre>
-        <code className='language-javascript'>{result?.abi && `${result.abi}`}</code>
+        <code className='language-javascript'>{result?.abi}</code>
       </pre>
 
       <h1 className='mt-4 text-xl'>Source Code</h1>
       <pre>
         <code className='language-solidity'>
-          {`
-            ${result?.solidity && `${result.solidity}`}
-          `}
+          {result?.solidity}
         </code>
       </pre>
     </>
