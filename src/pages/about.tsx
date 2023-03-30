@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import { Head } from '@/components/layout/Head';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import Prism from "prismjs";
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import Prism from 'prismjs';
 import meme from 'public/meme.jpg';
+import { Head } from '@/components/layout/Head';
 
 const About = () => {
   const router = useRouter();
@@ -12,14 +12,13 @@ const About = () => {
     Prism.highlightAll();
   }, []);
 
-  return(
+  return (
     <>
       <Head />
       <Image className='w-auto' src={meme} alt='logo' />
-      <pre>
-      </pre>
+      <pre></pre>
     </>
   );
-}
+};
 
 export default About;

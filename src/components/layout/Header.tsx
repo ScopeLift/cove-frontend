@@ -29,7 +29,10 @@ export const Header = () => {
         <div className='flex space-x-10'>
           <NavLink path='/about' label='About' />
           <NavLink path='/verify' label='Verify Contract' />
-          <NavLink path='/mainnet/0x42' label='View Contract' />
+          <NavLink
+            path='/polygon/0x406B940c7154eDB4Aa2B20CA62fC9A7e70fbe435'
+            label='View Contract'
+          />
         </div>
       </div>
     </div>

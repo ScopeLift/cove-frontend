@@ -43,7 +43,7 @@
   width: 100%;
 }
 
-input[type="text"] {
+input[type='text'] {
   width: 100%;
   box-sizing: border-box;
   font-family: monospace;
@@ -52,7 +52,7 @@ input[type="text"] {
   margin-bottom: 0.5rem;
 }
 
-input[type="text"],
+input[type='text'],
 #results {
   width: 100%;
   box-sizing: border-box;

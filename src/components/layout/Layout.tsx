@@ -12,7 +12,7 @@ export default function Layout({ children }: Props) {
       <main className='h-full w-full px-4 text-gray-800 dark:text-gray-100 sm:px-6 md:justify-between lg:px-8'>
         {children}
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

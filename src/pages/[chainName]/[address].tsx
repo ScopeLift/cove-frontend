@@ -1,7 +1,8 @@
-import { Head } from '@/components/layout/Head';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import Prism from "prismjs";
+import { useRouter } from 'next/router';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-solidity';
+import { Head } from '@/components/layout/Head';
 
 const Contract = () => {
   const router = useRouter();
@@ -10,85 +11,66 @@ const Contract = () => {
     Prism.highlightAll();
   }, []);
 
-  return(
+  return (
     <>
       <Head />
       <div>chain: {chainName}</div>
       <div>contract: {address}</div>
+
+      <h1 className='mt-4 text-xl'>ABI</h1>
       <pre>
-        <code className="language-javascript">
+        <code className='language-javascript'>
+          {`[
+  'function setNumber(uint256 arg0) payable',
+  'function number() payable returns (uint256 ret0)',
+  'function increment() payable'
+]`}
+        </code>
+      </pre>
+
+      <h1 className='mt-4 text-xl'>Source Code</h1>
+      <pre>
+        <code className='language-solidity'>
           {`
-// SPDX-License-Identifier: BUSL-1.1
-pragma solidity =0.7.6;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.8.0;
 
-import './interfaces/IUniswapV3Factory.sol';
+/// @title            Decompiled Contract
+/// @author           Jonathan Becker <jonathan@jbecker.dev>
+/// @custom:version   heimdall-rs v0.4.0
+///
+/// @notice           This contract was decompiled using the heimdall-rs decompiler.
+///                     It was generated directly by tracing the EVM opcodes from this contract.
+///                     As a result, it may not compile or even be valid solidity code.
+///                     Despite this, it should be obvious what each function does. Overall
+///                     logic should have been preserved throughout decompiling.
+///
+/// @custom:github    You can find the open-source decompiler here:
+///                       https://github.com/Jon-Becker/heimdall-rs
 
-import './UniswapV3PoolDeployer.sol';
-import './NoDelegateCall.sol';
+contract DecompiledContract {
 
-import './UniswapV3Pool.sol';
-
-/// @title Canonical Uniswap V3 factory
-/// @notice Deploys Uniswap V3 pools and manages ownership and control over pool protocol fees
-contract UniswapV3Factory is IUniswapV3Factory, UniswapV3PoolDeployer, NoDelegateCall {
-    /// @inheritdoc IUniswapV3Factory
-    address public override owner;
-
-    /// @inheritdoc IUniswapV3Factory
-    mapping(uint24 => int24) public override feeAmountTickSpacing;
-    /// @inheritdoc IUniswapV3Factory
-    mapping(address => mapping(address => mapping(uint24 => address))) public override getPool;
-
-    constructor() {
-        owner = msg.sender;
-        emit OwnerChanged(address(0), msg.sender);
-
-        feeAmountTickSpacing[500] = 10;
-        emit FeeAmountEnabled(500, 10);
-        feeAmountTickSpacing[3000] = 60;
-        emit FeeAmountEnabled(3000, 60);
-        feeAmountTickSpacing[10000] = 200;
-        emit FeeAmountEnabled(10000, 200);
+    /// @custom:selector    0x3fb5c1cb
+    /// @custom:name        setNumber
+    /// @param              arg0 ["bytes", "uint256", "int256", "string", "bytes32", "uint", "int"]
+    function setNumber(uint256 arg0) public payable {
+        if (msg.data.length - 0x04 < 0x20) { revert(); } else {
+        }
     }
 
-    /// @inheritdoc IUniswapV3Factory
-    function createPool(
-        address tokenA,
-        address tokenB,
-        uint24 fee
-    ) external override noDelegateCall returns (address pool) {
-        require(tokenA != tokenB);
-        (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
-        require(token0 != address(0));
-        int24 tickSpacing = feeAmountTickSpacing[fee];
-        require(tickSpacing != 0);
-        require(getPool[token0][token1][fee] == address(0));
-        pool = deploy(address(this), token0, token1, fee, tickSpacing);
-        getPool[token0][token1][fee] = pool;
-        // populate mapping in the reverse direction, deliberate choice to avoid the cost of comparing addresses
-        getPool[token1][token0][fee] = pool;
-        emit PoolCreated(token0, token1, fee, tickSpacing, pool);
+    /// @custom:selector    0x8381f58a
+    /// @custom:name        number
+    function number() public view payable returns (uint256) {
+        var_a = storage[0];
+        return(var_a);
     }
 
-    /// @inheritdoc IUniswapV3Factory
-    function setOwner(address _owner) external override {
-        require(msg.sender == owner);
-        emit OwnerChanged(owner, _owner);
-        owner = _owner;
-    }
-
-    /// @inheritdoc IUniswapV3Factory
-    function enableFeeAmount(uint24 fee, int24 tickSpacing) public override {
-        require(msg.sender == owner);
-        require(fee < 1000000);
-        // tick spacing is capped at 16384 to prevent the situation where tickSpacing is so large that
-        // TickBitmap#nextInitializedTickWithinOneWord overflows int24 container from a valid tick
-        // 16384 ticks represents a >5x price change with ticks of 1 bips
-        require(tickSpacing > 0 && tickSpacing < 16384);
-        require(feeAmountTickSpacing[fee] == 0);
-
-        feeAmountTickSpacing[fee] = tickSpacing;
-        emit FeeAmountEnabled(fee, tickSpacing);
+    /// @custom:selector    0xd09de08a
+    /// @custom:name        increment
+    function increment() public payable {
+        if (storage[0] - 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) {
+            storage[0] = 0x01 + storage[0];
+        }
     }
 }
           `}
@@ -96,6 +78,6 @@ contract UniswapV3Factory is IUniswapV3Factory, UniswapV3PoolDeployer, NoDelegat
       </pre>
     </>
   );
-}
+};
 
 export default Contract;
