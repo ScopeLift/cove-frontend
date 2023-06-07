@@ -1,4 +1,70 @@
+import { useState } from 'react';
+import type { Chain, Hash } from 'viem';
+import { SelectChain } from '@/components/ui/SelectChain';
+import { SUPPORTED_CHAINS } from '@/lib/constants';
+import type { BuildConfig, BuildFramework, VerifyData } from '@/lib/cove-api';
+
 export const Verify = () => {
+  const [chain, setChain] = useState<Chain>(SUPPORTED_CHAINS.mainnet);
+  const chains = Object.values(SUPPORTED_CHAINS);
+
+  const [formData, setFormData] = useState<VerifyData>({
+    repoUrl: '',
+    repoCommit: '',
+    contractAddress: '0x',
+    buildConfig: {
+      framework: 'foundry',
+      buildHint: 'default',
+    },
+    creationTxHashes: {},
+  });
+
+  // We need to keep track of the tx hashes in a separate state because it's easier to manage this
+  // as an array, then just convert it to an object when we need to set `formData.creationTxHashes`.
+  type CreationTxHash = { chain: Chain; hash: Hash | undefined };
+  const [creationTxHashes, setCreationTxHashes] = useState<CreationTxHash[]>([
+    { chain: SUPPORTED_CHAINS.mainnet, hash: undefined },
+  ]);
+  const handleChainChange = (index: number, chain: Chain) => {
+    handleTxHashInput(index, 'chain', chain);
+  };
+
+  const handleTxHashInput = (index: number, kind: 'chain' | 'hash', value: string | Chain) => {
+    if (kind === 'chain') {
+      const chain = value as unknown as Chain;
+      setCreationTxHashes((prev) => {
+        const next = [...prev];
+        next[index] = { ...next[index], chain };
+        return next;
+      });
+      console.log('creationTxHashes1:', creationTxHashes);
+    } else if (kind === 'hash') {
+      const hash = value as unknown as Hash;
+      setCreationTxHashes((prev) => {
+        const next = [...prev];
+        next[index] = { ...next[index], hash };
+        return next;
+      });
+      console.log('creationTxHashes2:', creationTxHashes);
+    }
+  };
+
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    if (!(e.target instanceof HTMLInputElement)) return;
+    const key = e.target.id;
+    if (['repoUrl', 'repoCommit', 'contractAddress'].includes(key)) {
+      setFormData({ ...formData, [key]: e.target.value });
+    } else if (key === 'buildHint') {
+      setFormData({
+        ...formData,
+        buildConfig: { ...formData.buildConfig, buildHint: e.target.value },
+      });
+    } else {
+      throw new Error(`Unexpected input ID: ${key}`);
+    }
+    console.log('formData:', formData);
+  };
+
   return (
     <>
       <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
@@ -11,15 +77,16 @@ export const Verify = () => {
             <div>
               <input
                 id='repoUrl'
+                onBlur={handleInput}
                 required
-                className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
               />
             </div>
 
             {/* Commit Hash */}
             <div className='mt-4 flex items-center justify-between'>
               <label
-                htmlFor='commitHash'
+                htmlFor='repoCommit'
                 className='block text-sm font-medium leading-6 text-gray-900'
               >
                 Commit Hash
@@ -27,9 +94,10 @@ export const Verify = () => {
             </div>
             <div>
               <input
-                id='commitHash'
+                id='repoCommit'
+                onBlur={handleInput}
                 required
-                className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
               />
             </div>
 
@@ -45,8 +113,9 @@ export const Verify = () => {
             <div>
               <input
                 id='contractAddress'
+                onBlur={handleInput}
                 required
-                className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
               />
             </div>
 
@@ -61,6 +130,7 @@ export const Verify = () => {
                 <label className='block text-sm leading-6 text-gray-400'>Framework</label>
                 <select
                   required
+                  // No `onBlur` handler since this is currently the only option.
                   autoComplete='country-name'
                   className='h-9 w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6'
                 >
@@ -71,6 +141,8 @@ export const Verify = () => {
                 <label className='block text-sm leading-6 text-gray-400'>Profile Name</label>
                 <input
                   required
+                  id='buildHint'
+                  onBlur={handleInput}
                   placeholder='default'
                   className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 />
@@ -83,26 +155,30 @@ export const Verify = () => {
                 Creation Transaction Hashes
               </label>
             </div>
-            <div className='flex items-center'>
-              <div>
-                <label className='block text-sm leading-6 text-gray-400'>Chain</label>
-                <select
-                  required
-                  autoComplete='country-name'
-                  className='h-9 w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6'
-                >
-                  <option>Foundry</option>
-                </select>
+
+            {creationTxHashes.map((txHash, index) => (
+              <div key={index} className='flex items-center'>
+                <div>
+                  <label className='text-sm leading-6 text-gray-400'>Chain</label>
+                  <SelectChain
+                    value={chain}
+                    onChange={(chainValue) => handleChainChange(index, chainValue)}
+                    options={chains}
+                  />
+                </div>
+                <div className='ml-2 flex-grow'>
+                  <label className='block text-sm leading-6 text-gray-400'>Transaction Hash</label>
+                  <input
+                    required
+                    onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleTxHashInput(index, 'hash', e.target.value)
+                    }
+                    placeholder='default'
+                    className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  />
+                </div>
               </div>
-              <div className='ml-2 flex-grow'>
-                <label className='block text-sm leading-6 text-gray-400'>Transaction Hash</label>
-                <input
-                  required
-                  placeholder='default'
-                  className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                />
-              </div>
-            </div>
+            ))}
 
             {/* Form Submit Button */}
             <button
