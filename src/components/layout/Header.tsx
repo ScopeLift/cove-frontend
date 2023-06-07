@@ -31,7 +31,6 @@ export const Header = () => {
 
       <div className='md:flex md:flex-1 md:items-center md:justify-between'>
         <div className='flex space-x-10'>
-          <NavLink path='/about' label='About' />
           <NavLink path='/verify' label='Verify Contract' />
           <NavLink path='/contract' label='View Contract' />
         </div>
