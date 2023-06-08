@@ -72,7 +72,7 @@ export const Verify = () => {
         <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
           <form action='#' method='POST'>
             {/* Repo URL */}
-            <label htmlFor='repoUrl' className='block text-sm font-medium leading-6 text-gray-300'>
+            <label htmlFor='repoUrl' className='block text-sm font-medium leading-6 text-gray-900'>
               Repo URL
             </label>
             <div>
@@ -80,7 +80,7 @@ export const Verify = () => {
                 id='repoUrl'
                 onBlur={handleInput}
                 required
-                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
               />
             </div>
 
@@ -88,7 +88,7 @@ export const Verify = () => {
             <div className='mt-4 flex items-center justify-between'>
               <label
                 htmlFor='repoCommit'
-                className='block text-sm font-medium leading-6 text-gray-300'
+                className='block text-sm font-medium leading-6 text-gray-900'
               >
                 Commit Hash
               </label>
@@ -98,7 +98,7 @@ export const Verify = () => {
                 id='repoCommit'
                 onBlur={handleInput}
                 required
-                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
               />
             </div>
 
@@ -106,7 +106,7 @@ export const Verify = () => {
             <div className='mt-4 flex items-center justify-between'>
               <label
                 htmlFor='contractAddress'
-                className='block text-sm font-medium leading-6 text-gray-300'
+                className='block text-sm font-medium leading-6 text-gray-900'
               >
                 Contract Address
               </label>
@@ -116,13 +116,13 @@ export const Verify = () => {
                 id='contractAddress'
                 onBlur={handleInput}
                 required
-                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
               />
             </div>
 
             {/* Build Configuration */}
             <div className='mt-4 flex items-center justify-between'>
-              <label className='block text-sm font-medium leading-6 text-gray-300'>
+              <label className='block text-sm font-medium leading-6 text-gray-900'>
                 Build Configuration
               </label>
             </div>
@@ -133,7 +133,7 @@ export const Verify = () => {
                   required
                   // No `onBlur` handler since this is currently the only option.
                   autoComplete='country-name'
-                  className='h-9 w-full rounded-md border-0 px-2 py-1.5 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6'
+                  className='h-9 w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6'
                 >
                   <option>Foundry</option>
                 </select>
@@ -145,14 +145,14 @@ export const Verify = () => {
                   id='buildHint'
                   onBlur={handleInput}
                   placeholder='default'
-                  className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 />
               </div>
             </div>
 
             {/* Creation Transaction Hashes */}
             <div className='mt-4 flex items-center justify-between'>
-              <label className='block text-sm font-medium leading-6 text-gray-300'>
+              <label className='block text-sm font-medium leading-6 text-gray-900'>
                 Creation Transaction Hashes
               </label>
             </div>
@@ -175,7 +175,7 @@ export const Verify = () => {
                       handleTxHashInput(index, 'hash', e.target.value)
                     }
                     placeholder='default'
-                    className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                    className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                   />
                 </div>
               </div>
