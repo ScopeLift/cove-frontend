@@ -27,11 +27,12 @@ export const Verify = () => {
   ]);
   const handleChainChange = (index: number, chain: Chain) => {
     handleTxHashInput(index, 'chain', chain);
+    setChain(chain);
   };
 
   const handleTxHashInput = (index: number, kind: 'chain' | 'hash', value: string | Chain) => {
     if (kind === 'chain') {
-      const chain = value as unknown as Chain;
+      const chain = value as Chain;
       setCreationTxHashes((prev) => {
         const next = [...prev];
         next[index] = { ...next[index], chain };
@@ -71,7 +72,7 @@ export const Verify = () => {
         <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
           <form action='#' method='POST'>
             {/* Repo URL */}
-            <label htmlFor='repoUrl' className='block text-sm font-medium leading-6 text-gray-900'>
+            <label htmlFor='repoUrl' className='block text-sm font-medium leading-6 text-gray-300'>
               Repo URL
             </label>
             <div>
@@ -79,7 +80,7 @@ export const Verify = () => {
                 id='repoUrl'
                 onBlur={handleInput}
                 required
-                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
               />
             </div>
 
@@ -87,7 +88,7 @@ export const Verify = () => {
             <div className='mt-4 flex items-center justify-between'>
               <label
                 htmlFor='repoCommit'
-                className='block text-sm font-medium leading-6 text-gray-900'
+                className='block text-sm font-medium leading-6 text-gray-300'
               >
                 Commit Hash
               </label>
@@ -97,7 +98,7 @@ export const Verify = () => {
                 id='repoCommit'
                 onBlur={handleInput}
                 required
-                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
               />
             </div>
 
@@ -105,7 +106,7 @@ export const Verify = () => {
             <div className='mt-4 flex items-center justify-between'>
               <label
                 htmlFor='contractAddress'
-                className='block text-sm font-medium leading-6 text-gray-900'
+                className='block text-sm font-medium leading-6 text-gray-300'
               >
                 Contract Address
               </label>
@@ -115,13 +116,13 @@ export const Verify = () => {
                 id='contractAddress'
                 onBlur={handleInput}
                 required
-                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
               />
             </div>
 
             {/* Build Configuration */}
             <div className='mt-4 flex items-center justify-between'>
-              <label className='block text-sm font-medium leading-6 text-gray-900'>
+              <label className='block text-sm font-medium leading-6 text-gray-300'>
                 Build Configuration
               </label>
             </div>
@@ -132,7 +133,7 @@ export const Verify = () => {
                   required
                   // No `onBlur` handler since this is currently the only option.
                   autoComplete='country-name'
-                  className='h-9 w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6'
+                  className='h-9 w-full rounded-md border-0 px-2 py-1.5 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6'
                 >
                   <option>Foundry</option>
                 </select>
@@ -144,14 +145,14 @@ export const Verify = () => {
                   id='buildHint'
                   onBlur={handleInput}
                   placeholder='default'
-                  className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 />
               </div>
             </div>
 
             {/* Creation Transaction Hashes */}
             <div className='mt-4 flex items-center justify-between'>
-              <label className='block text-sm font-medium leading-6 text-gray-900'>
+              <label className='block text-sm font-medium leading-6 text-gray-300'>
                 Creation Transaction Hashes
               </label>
             </div>
@@ -161,7 +162,7 @@ export const Verify = () => {
                 <div>
                   <label className='text-sm leading-6 text-gray-400'>Chain</label>
                   <SelectChain
-                    value={chain}
+                    value={creationTxHashes[index].chain}
                     onChange={(chainValue) => handleChainChange(index, chainValue)}
                     options={chains}
                   />
@@ -174,11 +175,35 @@ export const Verify = () => {
                       handleTxHashInput(index, 'hash', e.target.value)
                     }
                     placeholder='default'
-                    className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                    className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                   />
                 </div>
               </div>
             ))}
+            <button
+              className='mt-8 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              disabled={creationTxHashes.length === Object.keys(SUPPORTED_CHAINS).length}
+              onClick={() => {
+                const numChains = Object.keys(SUPPORTED_CHAINS).length;
+                if (creationTxHashes.length === numChains) {
+                  return;
+                }
+                handleTxHashInput(creationTxHashes.length, 'chain', SUPPORTED_CHAINS.mainnet);
+                handleTxHashInput(creationTxHashes.length, 'hash', '');
+              }}
+            >
+              Add another chain
+            </button>
+            {creationTxHashes.length > 1 && (
+              <button
+                className='mt-8 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                onClick={() => {
+                  setCreationTxHashes(creationTxHashes.slice(0, -1));
+                }}
+              >
+                Remove a chain
+              </button>
+            )}
 
             {/* Form Submit Button */}
             <button
