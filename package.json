@@ -18,6 +18,8 @@
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.44.3",
+    "react-icons": "^4.9.0",
     "swr": "^2.0.1",
     "viem": "^0.1.15"
   },
