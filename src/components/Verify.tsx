@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import type { Address, Chain, Hash } from 'viem';
-import { isAddress } from 'viem';
+import { isAddress, isHex } from 'viem';
 import FormErrorMessage from '@/components/ui/FormErrorMessage';
 import { SelectChain } from '@/components/ui/SelectChain';
 import { REQUIRED_FIELD_MSG, SUPPORTED_CHAINS } from '@/lib/constants';
@@ -68,7 +68,7 @@ export const Verify = () => {
                   required: REQUIRED_FIELD_MSG,
                   pattern: {
                     value: /^http(s?)(:\/\/)((www.)?)([a-zA-z0-9\-_]+)(.*)$/i,
-                    message: 'Invalid url',
+                    message: 'Please enter a valid repo URL',
                   },
                 })}
               />
@@ -97,6 +97,15 @@ export const Verify = () => {
                   minLength: {
                     value: 40,
                     message: 'Commit hash cannot be less than 40 characters',
+                  },
+                  validate: (value) => {
+                    if (value.startsWith('0x')) {
+                      return 'Commit cannot start with 0x';
+                    }
+                    if (!isHex(value)) {
+                      return 'Hash is not a valid hex string';
+                    }
+                    return true;
                   },
                 })}
               />
