@@ -5,7 +5,7 @@ import type { Address, Chain, Hash } from 'viem';
 import { isAddress } from 'viem';
 import FormErrorMessage from '@/components/ui/FormErrorMessage';
 import { SelectChain } from '@/components/ui/SelectChain';
-import { SUPPORTED_CHAINS } from '@/lib/constants';
+import { REQUIRED_FIELD_MSG, SUPPORTED_CHAINS } from '@/lib/constants';
 import type { BuildConfig, BuildFramework, VerifyData } from '@/lib/cove-api';
 
 type TxFormValues = {
@@ -65,7 +65,7 @@ export const Verify = () => {
                 id='repoUrl'
                 className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 {...register('repoUrl', {
-                  required: 'This is required',
+                  required: REQUIRED_FIELD_MSG,
                   pattern: {
                     value: /^http(s?)(:\/\/)((www.)?)([a-zA-z0-9\-_]+)(.*)$/i,
                     message: 'Invalid url',
@@ -89,7 +89,7 @@ export const Verify = () => {
                 id='repoCommit'
                 className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 {...register('repoCommit', {
-                  required: 'This is required',
+                  required: REQUIRED_FIELD_MSG,
                   maxLength: {
                     value: 40,
                     message: 'Commit hash cannot be greater than 40 characters',
@@ -117,7 +117,7 @@ export const Verify = () => {
                 id='contractAddress'
                 className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 {...register('contractAddress', {
-                  required: 'This is required',
+                  required: REQUIRED_FIELD_MSG,
                   validate: (value) => isAddress(value) || 'Invalid address',
                 })}
               />
@@ -136,7 +136,7 @@ export const Verify = () => {
                 <select
                   autoComplete='country-name'
                   className='h-9 w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6'
-                  {...register('framework', { required: 'This is required' })}
+                  {...register('framework', { required: REQUIRED_FIELD_MSG })}
                 >
                   <option>Foundry</option>
                 </select>
@@ -147,7 +147,7 @@ export const Verify = () => {
                   id='buildHint'
                   placeholder='default'
                   className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                  {...register('buildHint', { required: 'This is required' })}
+                  {...register('buildHint', { required: REQUIRED_FIELD_MSG })}
                 />
               </div>
             </div>
@@ -186,7 +186,7 @@ export const Verify = () => {
                       placeholder='default'
                       className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                       {...register(`creationTxHashes.${index}.hash` as const, {
-                        required: 'This is required',
+                        required: REQUIRED_FIELD_MSG,
                       })}
                     />
                   </div>

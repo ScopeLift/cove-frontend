@@ -9,3 +9,5 @@ export const TWITTER_URL = 'https://twitter.com/ScopeLift';
 
 export const SUPPORTED_CHAINS = { arbitrum, gnosis, goerli, mainnet, optimism, polygon, sepolia };
 export const COVE_API_URL = process.env.COVE_API_URL || 'https://api.covecontracts.com';
+
+export const REQUIRED_FIELD_MSG = 'This is required';
