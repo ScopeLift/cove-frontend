@@ -127,7 +127,7 @@ export const Verify = () => {
                 className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 {...register('contractAddress', {
                   required: REQUIRED_FIELD_MSG,
-                  validate: (value) => isAddress(value) || 'Invalid address',
+                  validate: (value) => isAddress(value) || 'Please enter a valid address',
                 })}
               />
               <FormErrorMessage error={errors?.contractAddress?.message} />
