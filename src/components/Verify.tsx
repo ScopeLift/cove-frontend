@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { GrFormClose } from 'react-icons/gr';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import type { Chain, Hash } from 'viem';
 import { isAddress } from 'viem';
 import FormErrorMessage from '@/components/ui/FormErrorMessage';
@@ -194,8 +194,8 @@ export const Verify = () => {
                     />
                   </div>
                   {selectedChains.length > 1 && (
-                    <GrFormClose
-                      className='cursor-pointer self-start'
+                    <XMarkIcon
+                      className='h-4 w-4 cursor-pointer self-start text-gray-400'
                       onClick={() => {
                         remove(index);
                         selectedChains.splice(index, 1);
