@@ -29,7 +29,6 @@ export const Verify = () => {
     register,
     control,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm<TxFormValues>({
     mode: 'onChange',
