@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { XMarkIcon } from '@heroicons/react/24/solid';
-import type { Chain, Hash } from 'viem';
+import type { Address, Chain, Hash } from 'viem';
 import { isAddress } from 'viem';
 import FormErrorMessage from '@/components/ui/FormErrorMessage';
 import { SelectChain } from '@/components/ui/SelectChain';
@@ -11,12 +11,12 @@ import type { BuildConfig, BuildFramework, VerifyData } from '@/lib/cove-api';
 type TxFormValues = {
   repoUrl: string;
   repoCommit: string;
-  contractAddress: string;
-  framework: string;
+  contractAddress: Address;
+  framework: BuildFramework;
   buildHint: string;
   creationTxHashes: {
-    chainId: number;
-    hash: string;
+    chainId: string;
+    hash: Hash;
   }[];
 };
 
