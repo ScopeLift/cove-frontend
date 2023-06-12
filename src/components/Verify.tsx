@@ -58,7 +58,7 @@ export const Verify = () => {
           <form action='#' method='POST' onSubmit={onSubmit}>
             {/* Repo URL */}
             <label htmlFor='repoUrl' className='block text-sm font-medium leading-6 text-gray-900'>
-              Repo URL<span className='text-red-600'> *</span>
+              Repo URL
             </label>
             <div>
               <input
@@ -81,7 +81,7 @@ export const Verify = () => {
                 htmlFor='repoCommit'
                 className='block text-sm font-medium leading-6 text-gray-900'
               >
-                Commit Hash<span className='text-red-600'> *</span>
+                Commit Hash
               </label>
             </div>
             <div>
@@ -109,7 +109,7 @@ export const Verify = () => {
                 htmlFor='contractAddress'
                 className='block text-sm font-medium leading-6 text-gray-900'
               >
-                Contract Address<span className='text-red-600'> *</span>
+                Contract Address
               </label>
             </div>
             <div>
@@ -142,9 +142,7 @@ export const Verify = () => {
                 </select>
               </div>
               <div className='ml-2 flex-grow'>
-                <label className='block text-sm leading-6 text-gray-400'>
-                  Profile Name <span className='text-red-600'> *</span>
-                </label>
+                <label className='block text-sm leading-6 text-gray-400'>Profile Name</label>
                 <input
                   id='buildHint'
                   placeholder='default'
@@ -182,7 +180,7 @@ export const Verify = () => {
                   </div>
                   <div className='ml-2 flex-grow'>
                     <label className='block text-sm leading-6 text-gray-400'>
-                      Transaction Hash<span className='text-red-600'> *</span>
+                      Transaction Hash
                     </label>
                     <input
                       placeholder='default'
