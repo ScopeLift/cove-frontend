@@ -41,7 +41,7 @@ export const Verify = () => {
       ],
     },
   });
-  console.log(errors);
+
   const { fields, append, remove } = useFieldArray({
     name: 'creationTxHashes',
     control,
