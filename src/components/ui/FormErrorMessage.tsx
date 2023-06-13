@@ -1,7 +1,7 @@
 const FormErrorMessage = ({ error }: { error?: string }) => {
   return (
     (error && (
-      <p role='alert' className='mt-1 text-xs text-red-600'>
+      <p role='alert' className='text-error mt-1 text-xs'>
         {error}
       </p>
     )) || <></>

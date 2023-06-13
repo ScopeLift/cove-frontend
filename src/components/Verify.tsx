@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { XMarkIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import type { Address, Chain, Hash } from 'viem';
 import { isAddress, isHex } from 'viem';
 import FormErrorMessage from '@/components/ui/FormErrorMessage';
 import { SelectChain } from '@/components/ui/SelectChain';
 import { REQUIRED_FIELD_MSG, SUPPORTED_CHAINS } from '@/lib/constants';
-import type { BuildConfig, BuildFramework, VerifyData } from '@/lib/cove-api';
+import type { BuildFramework } from '@/lib/cove-api';
 
 type TxFormValues = {
   repoUrl: string;
@@ -56,13 +56,13 @@ export const Verify = () => {
         <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
           <form action='#' method='POST' onSubmit={onSubmit}>
             {/* Repo URL */}
-            <label htmlFor='repoUrl' className='block text-sm font-medium leading-6 text-gray-900'>
+            <label htmlFor='repoUrl' className='text-primary block text-sm font-medium leading-6'>
               Repo URL
             </label>
             <div>
               <input
                 id='repoUrl'
-                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='input'
                 {...register('repoUrl', {
                   required: REQUIRED_FIELD_MSG,
                   pattern: {
@@ -78,7 +78,7 @@ export const Verify = () => {
             <div className='mt-4 flex items-center justify-between'>
               <label
                 htmlFor='repoCommit'
-                className='block text-sm font-medium leading-6 text-gray-900'
+                className='text-primary block text-sm font-medium leading-6'
               >
                 Commit Hash
               </label>
@@ -86,7 +86,7 @@ export const Verify = () => {
             <div>
               <input
                 id='repoCommit'
-                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='input'
                 {...register('repoCommit', {
                   required: REQUIRED_FIELD_MSG,
                   maxLength: {
@@ -116,7 +116,7 @@ export const Verify = () => {
             <div className='mt-4 flex items-center justify-between'>
               <label
                 htmlFor='contractAddress'
-                className='block text-sm font-medium leading-6 text-gray-900'
+                className='text-primary block text-sm font-medium leading-6'
               >
                 Contract Address
               </label>
@@ -124,7 +124,7 @@ export const Verify = () => {
             <div>
               <input
                 id='contractAddress'
-                className='block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                className='input'
                 {...register('contractAddress', {
                   required: REQUIRED_FIELD_MSG,
                   validate: (value) => isAddress(value) || 'Please enter a valid address',
@@ -135,27 +135,27 @@ export const Verify = () => {
 
             {/* Build Configuration */}
             <div className='mt-4 flex items-center justify-between'>
-              <label className='block text-sm font-medium leading-6 text-gray-900'>
+              <label className='text-primary block text-sm font-medium leading-6'>
                 Build Configuration
               </label>
             </div>
             <div className='flex items-center'>
               <div>
-                <label className='block text-sm leading-6 text-gray-400'>Framework</label>
+                <label className='text-secondary block text-sm leading-6'>Framework</label>
                 <select
                   autoComplete='country-name'
-                  className='h-9 w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6'
+                  className='select'
                   {...register('framework', { required: REQUIRED_FIELD_MSG })}
                 >
                   <option>Foundry</option>
                 </select>
               </div>
               <div className='ml-2 flex-grow'>
-                <label className='block text-sm leading-6 text-gray-400'>Profile Name</label>
+                <label className='text-secondary block text-sm leading-6'>Profile Name</label>
                 <input
                   id='buildHint'
                   placeholder='default'
-                  className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  className='input'
                   {...register('buildHint', { required: REQUIRED_FIELD_MSG })}
                 />
               </div>
@@ -166,7 +166,7 @@ export const Verify = () => {
 
             {/* Creation Transaction Hashes */}
             <div className='mt-4 flex items-center justify-between'>
-              <label className='block text-sm font-medium leading-6 text-gray-900'>
+              <label className='text-primary block text-sm font-medium leading-6'>
                 Creation Transaction Hashes
               </label>
             </div>
@@ -174,7 +174,7 @@ export const Verify = () => {
               <>
                 <div key={index} className='flex items-center'>
                   <div>
-                    <label className='text-sm leading-6 text-gray-400'>Chain</label>
+                    <label className='text-secondary text-sm leading-6'>Chain</label>
                     <input hidden {...register(`creationTxHashes.${index}.chainId`)} />
                     <SelectChain
                       value={selectedChains[index]}
@@ -192,13 +192,13 @@ export const Verify = () => {
                     />
                   </div>
                   <div className='ml-2 flex-grow'>
-                    <label className='block text-sm leading-6 text-gray-400'>
+                    <label className='text-secondary block text-sm leading-6'>
                       Transaction Hash
                     </label>
                     <input
                       key={index}
                       placeholder='default'
-                      className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                      className='input'
                       {...register(`creationTxHashes.${index}.hash` as const, {
                         required: REQUIRED_FIELD_MSG,
                         validate: (value) => {
@@ -215,7 +215,7 @@ export const Verify = () => {
                   </div>
                   {selectedChains.length > 1 && (
                     <XMarkIcon
-                      className='h-4 w-4 cursor-pointer self-start text-gray-400'
+                      className='text-secondary mb-3 ml-1 h-4 w-4 cursor-pointer self-end'
                       onClick={() => {
                         remove(index);
                         selectedChains.splice(index, 1);
@@ -232,20 +232,18 @@ export const Verify = () => {
             ))}
 
             <button
-              className='mt-8 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              className='hyperlink flex items-center text-sm'
               onClick={() => {
                 setSelectedChains((prev) => [...prev, SUPPORTED_CHAINS.mainnet]);
                 append({ chainId: SUPPORTED_CHAINS.mainnet.name, hash: '' as `0x{string}` });
               }}
             >
+              <PlusIcon className='mr-2 h-4 w-4 font-bold' />
               Add another chain
             </button>
 
             {/* Form Submit Button */}
-            <button
-              type='submit'
-              className='mt-8 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-            >
+            <button type='submit' className='btn-primary mt-8'>
               Verify
             </button>
           </form>
