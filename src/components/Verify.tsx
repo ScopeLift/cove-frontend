@@ -101,6 +101,10 @@ export const Verify = () => {
                     if (value.startsWith('0x')) {
                       return 'Commit cannot start with 0x';
                     }
+                    if (!isHex(`0x${value}`)) {
+                      return 'Commit hash is an invalid hex string';
+                    }
+
                     return true;
                   },
                 })}
