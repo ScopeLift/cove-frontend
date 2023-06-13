@@ -3,11 +3,11 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import type { Address, Chain, Hash } from 'viem';
 import { isAddress, isHex } from 'viem';
-import FormErrorMessage from '@/components/ui/FormErrorMessage';
+import { FormErrorMessage } from '@/components/ui/FormErrorMessage';
 import { SelectChain } from '@/components/ui/SelectChain';
-import { VerifyData, useVerifyContract } from '@/hooks/useVerifyContract';
 import { REQUIRED_FIELD_MSG, SUPPORTED_CHAINS } from '@/lib/constants';
-import type { BuildFramework } from '@/lib/cove-api';
+import { COVE_API_URL } from '@/lib/constants';
+import { BuildFramework, SuccessfulVerification, VerifyData } from '@/lib/cove-api';
 
 type TxFormValues = {
   repoUrl: string;
@@ -16,9 +16,28 @@ type TxFormValues = {
   framework: BuildFramework;
   buildHint: string;
   creationTxHashes: {
-    chainId: string;
+    chainName: string;
     hash: Hash;
   }[];
+};
+
+const verifyContract = async (data: TxFormValues) => {
+  const verifyData = shapeFormData(data);
+  const response = await fetch(new URL('/verify', COVE_API_URL).href, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(verifyData),
+  });
+
+  if (!response.ok) {
+    // Handle JSON vs. text error response
+    if (response.headers.get('Content-Type')?.includes('application/json')) {
+      throw new Error(await response.json());
+    } else {
+      throw new Error(await response.text());
+    }
+  }
+  return await response.json();
 };
 
 const shapeFormData = (data: TxFormValues): VerifyData => {
@@ -27,13 +46,13 @@ const shapeFormData = (data: TxFormValues): VerifyData => {
     repoCommit: data.repoCommit,
     contractAddress: data.contractAddress,
     buildConfig: {
-      framework: data.framework,
+      framework: data.framework.toLowerCase() as BuildFramework,
       buildHint: data.buildHint,
     },
     creationTxHashes: data.creationTxHashes.reduce(
-      (acc, { chainId, hash }) => ({
+      (acc, { chainName, hash }) => ({
         ...acc,
-        [chainId]: hash,
+        [chainName.toLowerCase()]: hash,
       }),
       {} as Record<string, Hash>
     ),
@@ -43,10 +62,28 @@ const shapeFormData = (data: TxFormValues): VerifyData => {
 export const Verify = () => {
   const [selectedChains, setSelectedChains] = useState<Chain[]>([SUPPORTED_CHAINS.mainnet]);
   const chains = Object.values(SUPPORTED_CHAINS);
-  const [form, setForm] = useState<TxFormValues | null>(null);
-  const { data, error, isLoading } = useVerifyContract(
-    shapeFormData(form as unknown as TxFormValues)
-  );
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | string | null>(null);
+  const [data, setData] = useState<SuccessfulVerification | null>(null);
+
+  // Set this to true to pre-populate the form with test data
+  const DEV_MODE = true;
+  const defaultDevFormData: Partial<TxFormValues> = {
+    repoUrl: 'https://github.com/ScopeLift/cove-test-repo',
+    repoCommit: 'b268862cf1ccf495d6dc20a86c41940dfb386d9b',
+    contractAddress: '0x8d56e3e001132d84488DbacDbB01AfB8C3171242',
+    buildHint: 'default',
+    creationTxHashes: [
+      {
+        chainName: SUPPORTED_CHAINS.goerli.name,
+        hash: '0x59724cfbee93a0c10f7cbd312c1d159d62ea602003dd61a407a5cf842b4103d6' as `0x{string}`,
+      },
+    ],
+  };
+  const defaultProdFormData: Partial<TxFormValues> = {
+    creationTxHashes: [{ chainName: SUPPORTED_CHAINS.mainnet.name, hash: '' as `0x{string}` }],
+  };
 
   const {
     handleSubmit,
@@ -56,23 +93,27 @@ export const Verify = () => {
     formState: { errors },
   } = useForm<TxFormValues>({
     mode: 'onBlur',
-    defaultValues: {
-      creationTxHashes: [
-        {
-          chainId: SUPPORTED_CHAINS.mainnet.name,
-          hash: '' as `0x{string}`,
-        },
-      ],
-    },
+    defaultValues: DEV_MODE ? defaultDevFormData : defaultProdFormData,
   });
 
-  const { fields, append, remove } = useFieldArray({
-    name: 'creationTxHashes',
-    control,
-  });
+  const { fields, append, remove } = useFieldArray({ name: 'creationTxHashes', control });
+
   const onSubmit = handleSubmit(async (values) => {
-    console.log('formData', values);
-    setForm(values);
+    try {
+      setIsLoading(true);
+      const result = await verifyContract(values);
+      setData(result);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(err);
+        setError(err);
+      } else {
+        console.error(JSON.stringify(err));
+        setError(JSON.stringify(err));
+      }
+    } finally {
+      setIsLoading(false);
+    }
   });
 
   return (
@@ -187,11 +228,11 @@ export const Verify = () => {
                 <div className='flex items-center'>
                   <div>
                     <label className='text-secondary text-sm leading-6'>Chain</label>
-                    <input hidden {...register(`creationTxHashes.${index}.chainId`)} />
+                    <input hidden {...register(`creationTxHashes.${index}.chainName`)} />
                     <SelectChain
                       value={selectedChains[index]}
                       onChange={(chainValue) => {
-                        setValue(`creationTxHashes.${index}.chainId`, chainValue.name, {
+                        setValue(`creationTxHashes.${index}.chainName`, chainValue.name, {
                           shouldValidate: true,
                         });
                         setSelectedChains((prev) => {
@@ -242,7 +283,7 @@ export const Verify = () => {
               className='hyperlink flex items-center text-sm'
               onClick={() => {
                 setSelectedChains((prev) => [...prev, SUPPORTED_CHAINS.mainnet]);
-                append({ chainId: SUPPORTED_CHAINS.mainnet.name, hash: '' as `0x{string}` });
+                append({ chainName: SUPPORTED_CHAINS.mainnet.name, hash: '' as `0x{string}` });
               }}
             >
               <PlusIcon className='mr-2 h-4 w-4 font-bold' />
@@ -255,16 +296,15 @@ export const Verify = () => {
             </button>
           </form>
         </div>
+        {isLoading && <p>Loading...</p>}
+        {error && <FormErrorMessage error={error} />}
+        {data && (
+          <div>
+            <p>Verification successful!</p>
+            <p>{JSON.stringify(data)}</p>
+          </div>
+        )}
       </div>
-
-      {isLoading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      {data && (
-        <div>
-          <p>Verification successful!</p>
-          <p>{JSON.stringify(data)}</p>
-        </div>
-      )}
     </>
   );
 };

@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import { Address, Hash } from 'viem';
-import { COVE_API_URL } from '@/lib/constants';
 
 export type BuildFramework = 'foundry';
 
@@ -18,7 +16,7 @@ export type VerifyData = {
 };
 
 // TODO clean up this type.
-type SuccessfulVerification = {
+export type SuccessfulVerification = {
   repo_url: string;
   repo_commit: string;
   contract_address: Address;
@@ -90,53 +88,4 @@ type SuccessfulVerification = {
     src: string;
     nodes: Array<any>;
   };
-};
-
-type UseVerificationResult = {
-  data: SuccessfulVerification | null;
-  error: string | null;
-  isLoading: boolean;
-};
-
-export const useVerifyContract = (form: VerifyData): UseVerificationResult => {
-  const [data, setData] = useState<SuccessfulVerification | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(NEXT_PUBLIC_COVE_API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form),
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(
-            `Request failed.\nStatus: ${response.status}\nMessage: ${errorData.message}`
-          );
-        }
-
-        const result = await response.json();
-        setData(result);
-        setError(null);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError(`An unexpected error occurred: ${JSON.stringify(err)}`);
-        }
-        setData(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [form]);
-
-  return { data, error, isLoading };
 };

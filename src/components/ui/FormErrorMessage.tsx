@@ -1,11 +1,7 @@
-const FormErrorMessage = ({ error }: { error?: string }) => {
+export const FormErrorMessage = ({ error }: { error?: Error | string }) => {
   return (
-    (error && (
-      <p role='alert' className='text-error mt-1 text-xs'>
-        {error}
-      </p>
-    )) || <></>
+    <p role='alert' className='text-error mt-1 text-xs'>
+      {typeof error === 'string' ? error : error?.message}
+    </p>
   );
 };
-
-export default FormErrorMessage;
