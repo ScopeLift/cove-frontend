@@ -5,6 +5,7 @@ import type { Address, Chain, Hash } from 'viem';
 import { isAddress, isHex } from 'viem';
 import FormErrorMessage from '@/components/ui/FormErrorMessage';
 import { SelectChain } from '@/components/ui/SelectChain';
+import { VerifyData, useVerifyContract } from '@/hooks/useVerifyContract';
 import { REQUIRED_FIELD_MSG, SUPPORTED_CHAINS } from '@/lib/constants';
 import type { BuildFramework } from '@/lib/cove-api';
 
@@ -20,9 +21,32 @@ type TxFormValues = {
   }[];
 };
 
+const shapeFormData = (data: TxFormValues): VerifyData => {
+  return {
+    repoUrl: data.repoUrl,
+    repoCommit: data.repoCommit,
+    contractAddress: data.contractAddress,
+    buildConfig: {
+      framework: data.framework,
+      buildHint: data.buildHint,
+    },
+    creationTxHashes: data.creationTxHashes.reduce(
+      (acc, { chainId, hash }) => ({
+        ...acc,
+        [chainId]: hash,
+      }),
+      {} as Record<string, Hash>
+    ),
+  };
+};
+
 export const Verify = () => {
   const [selectedChains, setSelectedChains] = useState<Chain[]>([SUPPORTED_CHAINS.mainnet]);
   const chains = Object.values(SUPPORTED_CHAINS);
+  const [form, setForm] = useState<TxFormValues | null>(null);
+  const { data, error, isLoading } = useVerifyContract(
+    shapeFormData(form as unknown as TxFormValues)
+  );
 
   const {
     handleSubmit,
@@ -48,6 +72,7 @@ export const Verify = () => {
   });
   const onSubmit = handleSubmit(async (values) => {
     console.log('formData', values);
+    setForm(values);
   });
 
   return (
@@ -183,7 +208,6 @@ export const Verify = () => {
                       Transaction Hash
                     </label>
                     <input
-                      placeholder='default'
                       className='input'
                       {...register(`creationTxHashes.${index}.hash` as const, {
                         required: REQUIRED_FIELD_MSG,
@@ -232,6 +256,15 @@ export const Verify = () => {
           </form>
         </div>
       </div>
+
+      {isLoading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
+      {data && (
+        <div>
+          <p>Verification successful!</p>
+          <p>{JSON.stringify(data)}</p>
+        </div>
+      )}
     </>
   );
 };
