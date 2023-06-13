@@ -31,7 +31,7 @@ export const Verify = () => {
     setValue,
     formState: { errors },
   } = useForm<TxFormValues>({
-    mode: 'onChange',
+    mode: 'onBlur',
     defaultValues: {
       creationTxHashes: [
         {
@@ -171,8 +171,8 @@ export const Verify = () => {
               </label>
             </div>
             {fields.map((txHash, index) => (
-              <>
-                <div key={index} className='flex items-center'>
+              <div key={index}>
+                <div className='flex items-center'>
                   <div>
                     <label className='text-secondary text-sm leading-6'>Chain</label>
                     <input hidden {...register(`creationTxHashes.${index}.chainId`)} />
@@ -196,7 +196,6 @@ export const Verify = () => {
                       Transaction Hash
                     </label>
                     <input
-                      key={index}
                       placeholder='default'
                       className='input'
                       {...register(`creationTxHashes.${index}.hash` as const, {
@@ -228,7 +227,7 @@ export const Verify = () => {
                 <div className='mb-2 mt-1 flex'>
                   <FormErrorMessage error={errors?.creationTxHashes?.[index]?.hash?.message} />
                 </div>
-              </>
+              </div>
             ))}
 
             <button
