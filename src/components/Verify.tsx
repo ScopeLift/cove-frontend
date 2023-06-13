@@ -15,7 +15,7 @@ type TxFormValues = {
   framework: BuildFramework;
   buildHint: string;
   creationTxHashes: {
-    chainId: string;
+    chainId: number;
     hash: Hash;
   }[];
 };
@@ -46,7 +46,6 @@ export const Verify = () => {
     name: 'creationTxHashes',
     control,
   });
-
   const onSubmit = handleSubmit(async (values) => {
     console.log('formData', values);
   });
@@ -101,9 +100,6 @@ export const Verify = () => {
                   validate: (value) => {
                     if (value.startsWith('0x')) {
                       return 'Commit cannot start with 0x';
-                    }
-                    if (!isHex(value)) {
-                      return 'Hash is not a valid hex string';
                     }
                     return true;
                   },
@@ -175,14 +171,18 @@ export const Verify = () => {
                 <div key={index} className='flex items-center'>
                   <div>
                     <label className='text-sm leading-6 text-gray-400'>Chain</label>
+                    <input hidden {...register(`creationTxHashes.${index}.chainId`)} />
                     <SelectChain
                       value={selectedChains[index]}
                       onChange={(chainValue) => {
-                        setSelectedChains((prev) => {
-                          prev[index] = chainValue;
-                          return prev;
+                        setValue(`creationTxHashes.${index}.chainId`, chainValue.id, {
+                          shouldValidate: true,
                         });
-                        setValue(`creationTxHashes.${index}.chainId`, chainValue.id);
+                        setSelectedChains((prev) => {
+                          const newPrev = [...prev];
+                          newPrev[index] = chainValue;
+                          return newPrev;
+                        });
                       }}
                       options={chains}
                     />
@@ -192,10 +192,20 @@ export const Verify = () => {
                       Transaction Hash
                     </label>
                     <input
+                      key={index}
                       placeholder='default'
                       className='w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                       {...register(`creationTxHashes.${index}.hash` as const, {
                         required: REQUIRED_FIELD_MSG,
+                        validate: (value) => {
+                          if (!value.startsWith('0x')) {
+                            return 'Hash must start with 0x';
+                          }
+                          if (!isHex(value)) {
+                            return 'Hash is not a valid hex string';
+                          }
+                          return true;
+                        },
                       })}
                     />
                   </div>
@@ -212,7 +222,7 @@ export const Verify = () => {
                 </div>
 
                 <div className='mb-2 mt-1 flex'>
-                  <FormErrorMessage error={errors?.buildHint?.message} />
+                  <FormErrorMessage error={errors?.creationTxHashes?.[index]?.hash?.message} />
                 </div>
               </>
             ))}
