@@ -89,22 +89,9 @@ export const Verify = () => {
                 className='input'
                 {...register('repoCommit', {
                   required: REQUIRED_FIELD_MSG,
-                  maxLength: {
-                    value: 40,
-                    message: 'Commit hash cannot be greater than 40 characters',
-                  },
-                  minLength: {
-                    value: 40,
-                    message: 'Commit hash cannot be less than 40 characters',
-                  },
                   validate: (value) => {
-                    if (value.startsWith('0x')) {
-                      return 'Commit cannot start with 0x';
-                    }
-                    if (!isHex(`0x${value}`)) {
-                      return 'Commit hash is an invalid hex string';
-                    }
-
+                    if (value.startsWith('0x')) return 'Commit cannot start with 0x';
+                    if (!isHex(`0x${value}`)) return 'Commit hash is not a valid hex string';
                     return true;
                   },
                 })}
@@ -201,12 +188,9 @@ export const Verify = () => {
                       {...register(`creationTxHashes.${index}.hash` as const, {
                         required: REQUIRED_FIELD_MSG,
                         validate: (value) => {
-                          if (!value.startsWith('0x')) {
-                            return 'Hash must start with 0x';
-                          }
-                          if (!isHex(value)) {
-                            return 'Hash is not a valid hex string';
-                          }
+                          if (!value.startsWith('0x')) return 'Transaction hash must start with 0x';
+                          if (!isHex(value)) return 'Transaction hash is not a valid hex string';
+                          if (value.length !== 66) return 'Please enter a valid transaction hash';
                           return true;
                         },
                       })}
