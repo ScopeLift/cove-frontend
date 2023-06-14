@@ -4,7 +4,9 @@ import { PlusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import type { Address, Chain, Hash } from 'viem';
 import { isAddress, isHex } from 'viem';
 import { FormErrorMessage } from '@/components/ui/FormErrorMessage';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { SelectChain } from '@/components/ui/SelectChain';
+import { VerifiedContract } from '@/components/ui/VerifiedContract';
 import { REQUIRED_FIELD_MSG, SUPPORTED_CHAINS } from '@/lib/constants';
 import { COVE_API_URL } from '@/lib/constants';
 import { BuildFramework, SuccessfulVerification, VerifyData } from '@/lib/cove-api';
@@ -227,7 +229,7 @@ export const Verify = () => {
               <div key={index}>
                 <div className='flex items-center'>
                   <div>
-                    <label className='text-secondary text-sm leading-6'>Chain</label>
+                    <label className='text-secondary text-sm leading-4'>Chain</label>
                     <input hidden {...register(`creationTxHashes.${index}.chainName`)} />
                     <SelectChain
                       value={selectedChains[index]}
@@ -291,17 +293,24 @@ export const Verify = () => {
             </button>
 
             {/* Form Submit Button */}
-            <button type='submit' className='btn-primary mt-8'>
-              Verify
+            <button type='submit' className='btn-primary mt-8' disabled={isLoading}>
+              {isLoading ? <LoadingSpinner /> : 'Verify'}
             </button>
+
+            {/* Verification Status */}
+            {isLoading && (
+              <p className='mt-2 text-center text-xs italic'>
+                This may take a minute or two, please be patient!
+              </p>
+            )}
+            {error && <FormErrorMessage error={error} />}
           </form>
         </div>
-        {isLoading && <p>Loading...</p>}
-        {error && <FormErrorMessage error={error} />}
+
+        {/* Verified Data */}
         {data && (
           <div>
-            <p>Verification successful!</p>
-            <p>{JSON.stringify(data)}</p>
+            <VerifiedContract data={data} />
           </div>
         )}
       </div>
