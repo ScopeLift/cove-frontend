@@ -20,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.3",
     "sharp": "^0.32.1",
+    "swr": "^2.1.5",
     "viem": "^1.0.7"
   },
   "devDependencies": {

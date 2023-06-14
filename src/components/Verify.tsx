@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import useSWRMutation from 'swr/mutation';
 import type { Address, Chain, Hash } from 'viem';
 import { isAddress, isHex } from 'viem';
 import { FormErrorMessage } from '@/components/ui/FormErrorMessage';
@@ -21,8 +22,8 @@ type TxFormValues = {
   }[];
 };
 
-const verifyContract = async (data: TxFormValues) => {
-  const verifyData = shapeFormData(data);
+const verifyContract = async (key: string, { arg }: { arg: TxFormValues }) => {
+  const verifyData = shapeFormData(arg);
   const response = await fetch(new URL('/verify', COVE_API_URL).href, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -63,9 +64,12 @@ export const Verify = () => {
   const [selectedChains, setSelectedChains] = useState<Chain[]>([SUPPORTED_CHAINS.mainnet]);
   const chains = Object.values(SUPPORTED_CHAINS);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | string | null>(null);
-  const [data, setData] = useState<SuccessfulVerification | null>(null);
+  const {
+    trigger,
+    data,
+    isMutating: isLoading,
+    error,
+  } = useSWRMutation('/verify', verifyContract, {});
 
   // Set this to true to pre-populate the form with test data
   const DEV_MODE = true;
@@ -99,21 +103,7 @@ export const Verify = () => {
   const { fields, append, remove } = useFieldArray({ name: 'creationTxHashes', control });
 
   const onSubmit = handleSubmit(async (values) => {
-    try {
-      setIsLoading(true);
-      const result = await verifyContract(values);
-      setData(result);
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err);
-        setError(err);
-      } else {
-        console.error(JSON.stringify(err));
-        setError(JSON.stringify(err));
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    trigger(values);
   });
 
   return (
