@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import type { Address, Chain, Hash } from 'viem';
@@ -67,6 +67,7 @@ const shapeFormData = (data: TxFormValues): VerifyData => {
 };
 
 export const Verify = () => {
+  // -------- Form management --------
   // Set this to true to pre-populate the form with test data
   const DEV_MODE = true;
   const defaultChain = DEV_MODE ? SUPPORTED_CHAINS.goerli : SUPPORTED_CHAINS.mainnet;
@@ -88,10 +89,6 @@ export const Verify = () => {
   const [selectedChains, setSelectedChains] = useState<Chain[]>([defaultChain]);
   const chains = Object.values(SUPPORTED_CHAINS);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | string | null>(null);
-  const [data, setData] = useState<SuccessfulVerification | null>(null);
-
   const {
     handleSubmit,
     register,
@@ -104,6 +101,11 @@ export const Verify = () => {
   });
 
   const { fields, append, remove } = useFieldArray({ name: 'creationTxHashes', control });
+
+  // -------- Verification request state --------
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | string | null>(null);
+  const [data, setData] = useState<SuccessfulVerification | null>(null);
 
   const onSubmit = handleSubmit(async (values) => {
     try {
@@ -123,6 +125,16 @@ export const Verify = () => {
     }
   });
 
+  // -------- Scroll to verified contract --------
+  const verifiedRef = useRef<HTMLDivElement>(null);
+  const scrollToRef = () => {
+    verifiedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  useEffect(() => {
+    if (data) scrollToRef();
+  }, [data]);
+
+  // -------- Render --------
   return (
     <>
       <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
@@ -315,7 +327,7 @@ export const Verify = () => {
 
         {/* Verified Data */}
         {!isLoading && !error && data && (
-          <div>
+          <div ref={verifiedRef}>
             <VerifiedContract data={data} />
           </div>
         )}

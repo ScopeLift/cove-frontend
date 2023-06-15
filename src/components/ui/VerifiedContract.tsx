@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useTheme } from 'next-themes';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-solidity';
@@ -62,36 +63,52 @@ export const VerifiedContract = ({ data }: Props) => {
   }, [theme]);
 
   return (
-    <div className='max-w-7xl'>
-      <p className='text-secondary mt-4 text-center text-sm italic'>
-        Showing data for {defaultChain}
-      </p>
-
-      {/* Stats */}
-      <div>
-        <div className='flex flex-wrap items-center justify-between'>
-          {stats.map((stat) => (
-            <div key={stat.name} className='py-6'>
-              <p className='text-secondary text-sm font-medium leading-6'>{stat.name}</p>
-              <p className='mt-2 flex items-baseline gap-x-2'>
-                <span className='text-primary text-3xl font-semibold tracking-tight'>
-                  {stat.value}
-                </span>
-              </p>
+    <>
+      <div className='mx-auto mt-10 rounded-md bg-green-50 p-4 dark:bg-green-900 sm:w-full sm:max-w-sm'>
+        <div className='flex items-center justify-center'>
+          <div>
+            <CheckCircleIcon
+              className='h-12 w-12 text-green-400 dark:text-green-500'
+              aria-hidden='true'
+            />
+          </div>
+          <div className='ml-3'>
+            <h3 className='text-sm font-medium text-green-800 dark:text-green-100'>
+              Verification successful!
+            </h3>
+            <div className='mt-1 text-xs text-green-700 dark:text-green-200'>
+              <p>Showing data for {defaultChain}</p>
             </div>
-          ))}
+          </div>
         </div>
       </div>
-
-      {/* Source code */}
-      {data.sources.map((source) => (
-        <div key={source.path}>
-          <p className='font-mono'>{source.path.split('src/')[1]}</p>
-          <pre className='bg-secondary p-4 shadow-sm'>
-            <code className='language-solidity'>{source.content}</code>
-          </pre>
+      <div className='max-w-7xl'>
+        {/* Stats */}
+        <div>
+          <div className='flex flex-wrap items-center justify-between'>
+            {stats.map((stat) => (
+              <div key={stat.name} className='py-6'>
+                <p className='text-secondary text-sm font-medium leading-6'>{stat.name}</p>
+                <p className='mt-2 flex items-baseline gap-x-2'>
+                  <span className='text-primary text-3xl font-semibold tracking-tight'>
+                    {stat.value}
+                  </span>
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
+
+        {/* Source code */}
+        {data.sources.map((source) => (
+          <div key={source.path}>
+            <p className='font-mono'>{source.path.split('src/')[1]}</p>
+            <pre className='bg-secondary p-4 shadow-sm'>
+              <code className='language-solidity'>{source.content}</code>
+            </pre>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
