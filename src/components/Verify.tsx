@@ -62,15 +62,9 @@ const shapeFormData = (data: TxFormValues): VerifyData => {
 };
 
 export const Verify = () => {
-  const [selectedChains, setSelectedChains] = useState<Chain[]>([SUPPORTED_CHAINS.mainnet]);
-  const chains = Object.values(SUPPORTED_CHAINS);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | string | null>(null);
-  const [data, setData] = useState<SuccessfulVerification | null>(null);
-
   // Set this to true to pre-populate the form with test data
   const DEV_MODE = true;
+  const defaultChain = DEV_MODE ? SUPPORTED_CHAINS.goerli : SUPPORTED_CHAINS.mainnet;
   const defaultDevFormData: Partial<TxFormValues> = {
     repoUrl: 'https://github.com/ScopeLift/cove-test-repo',
     repoCommit: 'b268862cf1ccf495d6dc20a86c41940dfb386d9b',
@@ -86,6 +80,12 @@ export const Verify = () => {
   const defaultProdFormData: Partial<TxFormValues> = {
     creationTxHashes: [{ chainName: SUPPORTED_CHAINS.mainnet.name, hash: '' as `0x{string}` }],
   };
+  const [selectedChains, setSelectedChains] = useState<Chain[]>([defaultChain]);
+  const chains = Object.values(SUPPORTED_CHAINS);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | string | null>(null);
+  const [data, setData] = useState<SuccessfulVerification | null>(null);
 
   const {
     handleSubmit,
