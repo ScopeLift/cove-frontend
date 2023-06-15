@@ -42,6 +42,11 @@ const verifyContract = async (data: TxFormValues) => {
   return await response.json();
 };
 
+const CHAIN_NAMES_MAP: { [index: string]: string } = {
+  Ethereum: 'mainnet',
+  'Arbitrum One': 'arbitrum',
+};
+
 const shapeFormData = (data: TxFormValues): VerifyData => {
   return {
     repoUrl: data.repoUrl,
@@ -54,7 +59,7 @@ const shapeFormData = (data: TxFormValues): VerifyData => {
     creationTxHashes: data.creationTxHashes.reduce(
       (acc, { chainName, hash }) => ({
         ...acc,
-        [chainName.toLowerCase()]: hash,
+        [CHAIN_NAMES_MAP[chainName] || chainName.toLowerCase()]: hash,
       }),
       {} as Record<string, Hash>
     ),
@@ -234,6 +239,7 @@ export const Verify = () => {
                     <SelectChain
                       value={selectedChains[index]}
                       onChange={(chainValue) => {
+                        console.log('chainValue:', chainValue);
                         setValue(`creationTxHashes.${index}.chainName`, chainValue.name, {
                           shouldValidate: true,
                         });
@@ -308,7 +314,7 @@ export const Verify = () => {
         </div>
 
         {/* Verified Data */}
-        {data && (
+        {!isLoading && !error && data && (
           <div>
             <VerifiedContract data={data} />
           </div>
