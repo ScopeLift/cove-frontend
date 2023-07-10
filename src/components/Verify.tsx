@@ -251,7 +251,6 @@ export const Verify = () => {
                     <SelectChain
                       value={selectedChains[index]}
                       onChange={(chainValue) => {
-                        console.log('chainValue:', chainValue);
                         setValue(`creationTxHashes.${index}.chainName`, chainValue.name, {
                           shouldValidate: true,
                         });
