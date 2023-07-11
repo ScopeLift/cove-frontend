@@ -8,7 +8,8 @@ The backend can be found in the [ScopeLift/cove-backend](https://github.com/Scop
 To run the server locally:
 
 ```shell
-yarn install
-yarn next build
-yarn dev
+pnpm install
+pnpm dev
 ```
+
+To use your own API endpoint, run `cp .env.template .env.local` and update the `NEXT_PUBLIC_COVE_API_URL`.

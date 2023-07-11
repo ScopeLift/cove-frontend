@@ -1,12 +1,7 @@
 import NextHead from 'next/head';
 import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/constants';
 
-interface Props {
-  title?: string;
-  description?: string;
-}
-
-export function Head(props: Props) {
+export function Head(props: { title?: string; description?: string }) {
   return (
     <NextHead>
       <title>{props.title ? `${props.title} | ${SITE_NAME}` : SITE_NAME}</title>

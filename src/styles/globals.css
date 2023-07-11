@@ -3,65 +3,34 @@
 @tailwind utilities;
 
 @layer base {
+  .text-primary {
+    @apply text-gray-900 dark:text-gray-50;
+  }
+  .text-secondary {
+    @apply text-gray-500  dark:text-gray-400;
+  }
+  .text-accent {
+    @apply text-emerald-700 dark:text-emerald-300;
+  }
+  .text-error {
+    @apply text-red-600 dark:text-red-400;
+  }
+  .bg-primary {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+  .bg-secondary {
+    @apply bg-gray-50 dark:bg-gray-700;
+  }
+  .input {
+    @apply bg-secondary text-primary placeholder:text-secondary block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6;
+  }
+  .select {
+    @apply input h-9 bg-white py-1.5;
+  }
   .btn-primary {
-    @apply inline-flex cursor-pointer items-center rounded-md bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-75;
+    @apply flex w-full cursor-pointer items-center justify-center rounded-md bg-emerald-600 px-4 py-2 text-center text-base font-medium text-white shadow-sm hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-75;
   }
   .hyperlink {
-    @apply text-blue-600 no-underline dark:text-blue-300;
+    @apply text-emerald-600 no-underline dark:text-emerald-300;
   }
-}
-
-.Verify {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem;
-}
-
-.verify-button {
-  font-size: 1.5rem;
-  background-color: blue;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
-  cursor: pointer;
-}
-
-.input-fields {
-  /* display: grid; */
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 0.5rem;
-  align-items: center;
-  margin-bottom: 1rem;
-  width: 100%;
-  max-width: 800px;
-}
-
-.input-fields > div {
-  width: 100%;
-}
-
-input[type='text'] {
-  width: 100%;
-  box-sizing: border-box;
-  font-family: monospace;
-  font-size: 1rem;
-  padding: 0.25rem;
-  margin-bottom: 0.5rem;
-}
-
-input[type='text'],
-#results {
-  width: 100%;
-  box-sizing: border-box;
-  font-family: monospace;
-  font-size: 1rem;
-  padding: 0.25rem;
-  margin-bottom: 0.5rem;
-}
-
-#results {
-  width: calc(80 * 1ch);
 }

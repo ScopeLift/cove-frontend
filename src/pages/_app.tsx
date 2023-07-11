@@ -3,7 +3,6 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import Layout from '@/components/layout/Layout';
 import '@/styles/globals.css';
-import '../styles/prism.css';
 
 function App({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = React.useState(false);

@@ -1,3 +1,6 @@
 .next
 .pnp.cjs
 .pnp.loader.mjs
+pnpm-lock.yaml
+public/prism-dark.css
+public/prism-light.css
