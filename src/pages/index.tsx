@@ -30,7 +30,9 @@ const Home = () => {
       question: 'What are the limitations?',
       answer: (
         <>
-          Cove is in alpha, so it currently has a few limitations that will be lifted in the future:
+          Cove is currently in alpha. We don&apos;t currently store or expose the contract
+          verification data. By trying out Cove, you&apos;re helping us learn and improve. The
+          current version also has limited functionality:
           <ul className='list-disc pl-8'>
             <li>Only forge projects are supported.</li>
             <li>Only Solidity contracts are supported.</li>
@@ -43,14 +45,13 @@ const Home = () => {
               excited about the future of contract verification).
             </li>
             <li>
-              To reduce our expenses for now, we do not yet trace calls or search for deployment
-              transactions. This means:
+              Cove does not yet trace calls or search for deployment transactions. This means:
               <ul className='list-disc pl-8'>
                 <li>You must provide the transaction on the verification form.</li>
                 <li>
-                  Contract deployed from arbitrary contracts cannot yet be verified. Only contracts
-                  deployed via a standard <code className='text-sm'>create</code> deployment, Nick
-                  Johnson&apos;s <code className='text-sm'>create2</code>{' '}
+                  Contracts deployed from arbitrary factory contracts cannot yet be verified. Only
+                  contracts deployed via a standard <code className='text-sm'>create</code>{' '}
+                  deployment, Nick Johnson&apos;s <code className='text-sm'>create2</code>{' '}
                   <ExternalLink
                     text='deployer'
                     href='https://github.com/Arachnid/deterministic-deployment-proxy'
