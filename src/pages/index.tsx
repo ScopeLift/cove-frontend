@@ -79,12 +79,13 @@ const Home = () => {
           </Link>{' '}
           a contract! This is a public goods project funded solely by hackathon{' '}
           <ExternalLink text='prizes' href='https://ethglobal.com/showcase/cove-8ohfk' />, so
-          consider donating to TODO or nominating us for the{' '}
+          consider donating to <code className='text-sm'>covecontracts.eth</code> or nominating us
+          for the{' '}
           <ExternalLink
             text='upcoming'
             href='https://optimism.mirror.xyz/oVnEz7LrfeOTC7H6xCXb5dMZ8Rc4dSkD2KfgG5W9cCw'
           />{' '}
-          Optimism RPGF round
+          Optimism RPGF round.
         </>
       ),
     },
