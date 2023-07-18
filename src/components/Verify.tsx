@@ -45,6 +45,8 @@ const verifyContract = async (data: TxFormValues) => {
 const CHAIN_NAMES_MAP: { [index: string]: string } = {
   Ethereum: 'mainnet',
   'Arbitrum One': 'arbitrum',
+  Gnosis: 'x_dai',
+  'OP Mainnet': 'optimism',
 };
 
 const shapeFormData = (data: TxFormValues): VerifyData => {
