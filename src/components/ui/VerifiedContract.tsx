@@ -10,6 +10,7 @@ interface Props {
 }
 
 export const VerifiedContract = ({ data }: Props) => {
+  // -------- Verification Data Formatting --------
   const defaultChain = Object.keys(data.matches)[0];
   const contractName =
     data.compiler_info.settings.compilationTarget[
@@ -30,6 +31,28 @@ export const VerifiedContract = ({ data }: Props) => {
     },
   ];
 
+  // The API ensures the first item in the `sources` array is the contract we're verifying, but the
+  // rest are unordered. We sort them here so `src/*.sol` comes first, then `src/**/*.sol`, then
+  // everything else is alphabetical.
+  data.sources.sort((a, b) => {
+    // Do not move the first item.
+    if (a === data.sources[0]) return -1;
+    if (b === data.sources[0]) return 1;
+
+    // Otherwise, sort based on the above criteria.
+    const isARootSrcFile = a.path.startsWith('src/') && !a.path.includes('/', 4);
+    const isBRootSrcFile = b.path.startsWith('src/') && !b.path.includes('/', 4);
+    const isANestedSrcFile = a.path.startsWith('src/') && a.path.includes('/', 4);
+    const isBNestedSrcFile = b.path.startsWith('src/') && b.path.includes('/', 4);
+
+    if (isARootSrcFile && !isBRootSrcFile) return -1; // a comes first.
+    else if (!isARootSrcFile && isBRootSrcFile) return 1; // b comes first.
+    else if (isANestedSrcFile && !isBNestedSrcFile) return -1; // a comes first.
+    else if (!isANestedSrcFile && isBNestedSrcFile) return 1; // b comes first.
+    else return a.path.localeCompare(b.path); // Compare alphabetically.
+  });
+
+  // -------- Source Code Highlighting --------
   // This is required to highlight the code.
   useEffect(() => {
     Prism.highlightAll();
@@ -62,6 +85,7 @@ export const VerifiedContract = ({ data }: Props) => {
     importTheme();
   }, [theme]);
 
+  // -------- Render --------
   return (
     <>
       <div className='mx-auto mt-10 rounded-md bg-green-50 p-4 dark:bg-green-900 sm:w-full sm:max-w-sm'>
@@ -82,7 +106,7 @@ export const VerifiedContract = ({ data }: Props) => {
           </div>
         </div>
       </div>
-      <div className='max-w-7xl'>
+      <div className='mx-auto mt-10 max-w-7xl'>
         {/* Stats */}
         <div>
           <div className='flex flex-wrap items-center justify-between'>
@@ -100,9 +124,12 @@ export const VerifiedContract = ({ data }: Props) => {
         </div>
 
         {/* Source code */}
-        {data.sources.map((source) => (
-          <div key={source.path}>
-            <p className='font-mono'>{source.path.split('src/')[1]}</p>
+        {data.sources.map((source, index) => (
+          <div key={source.path} className='mt-10'>
+            <p>
+              File {index + 1} of {data.sources.length}:{' '}
+              <span className='font-mono'>{source.path}</span>
+            </p>
             <pre className='bg-secondary p-4 shadow-sm'>
               <code className='language-solidity'>{source.content}</code>
             </pre>
