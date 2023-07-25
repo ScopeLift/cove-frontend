@@ -98,7 +98,7 @@ const Home = () => {
       {/* Header */}
       <h1 className='text-accent text-center text-base font-semibold'>
         <Link href='/verify' className='max-w-prose text-sm font-semibold'>
-          Try Cove →
+          Test Cove →
         </Link>
       </h1>
       <p className='mt-2 text-center text-3xl font-bold tracking-tight sm:text-4xl '>
@@ -118,7 +118,7 @@ const Home = () => {
       </div>
       <div className='mt-10 flex flex-1 justify-center'>
         <Link href='/verify' className='btn-primary max-w-prose'>
-          Try it now →
+          Test Cove now →
         </Link>
       </div>
     </>
