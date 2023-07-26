@@ -72,16 +72,16 @@ export const Verify = () => {
   // -------- Form management --------
   // Set this to true to pre-populate the form with test data
   const DEV_MODE = true;
-  const defaultChain = DEV_MODE ? SUPPORTED_CHAINS.goerli : SUPPORTED_CHAINS.mainnet;
+  const defaultChain = DEV_MODE ? SUPPORTED_CHAINS.mainnet : SUPPORTED_CHAINS.mainnet;
   const defaultDevFormData: Partial<TxFormValues> = {
-    repoUrl: 'https://github.com/ScopeLift/cove-test-repo',
-    repoCommit: 'b268862cf1ccf495d6dc20a86c41940dfb386d9b',
-    contractAddress: '0x8d56e3e001132d84488DbacDbB01AfB8C3171242',
+    repoUrl: 'https://github.com/gitcoinco/Alpha-Governor-Upgrade',
+    repoCommit: '17f7717eec0604505da2faf3f65516a8619063a0',
+    contractAddress: '0x1a84384e1f1b12D53E60C8C528178dC87767b488',
     buildHint: 'default',
     creationTxHashes: [
       {
-        chainName: SUPPORTED_CHAINS.goerli.name,
-        hash: '0x59724cfbee93a0c10f7cbd312c1d159d62ea602003dd61a407a5cf842b4103d6' as `0x{string}`,
+        chainName: SUPPORTED_CHAINS.mainnet.name,
+        hash: '0x61d669c6c0b976637b8f4528b99b170f060227b2bc20892743f22c6a34c84e23' as `0x{string}`,
       },
     ],
   };
@@ -111,6 +111,11 @@ export const Verify = () => {
 
   const onSubmit = handleSubmit(async (values) => {
     try {
+      // Clear any existing data and errors.
+      setData(null);
+      setError(null);
+
+      // Submit the verification request.
       setIsLoading(true);
       const result = await verifyContract(values);
       setData(result);
@@ -322,7 +327,7 @@ export const Verify = () => {
                 This may take a minute or two, please be patient!
               </p>
             )}
-            {error && <FormErrorMessage error={error} />}
+            {!isLoading && error && <FormErrorMessage error={error} />}
           </form>
         </div>
 
