@@ -29,10 +29,10 @@ const navigation = [
 
 export const Footer = () => {
   return (
-    <footer className='mt-auto bg-gray-100 dark:bg-gray-900'>
+    <footer className='bg-primary mt-auto'>
       <div className='flex flex-wrap items-center justify-between px-4 py-6 sm:px-6 md:justify-between lg:px-8'>
         <div className='col-span-full md:order-2'>
-          <p className='text-center text-sm text-gray-400'>
+          <p className='text-secondary text-center text-sm'>
             &copy; 2023 <ExternalLink href={COMPANY_URL} text={COMPANY_NAME} />. All rights
             reserved.
           </p>
@@ -45,7 +45,7 @@ export const Footer = () => {
               href={item.href}
               target='_blank'
               rel='noreferrer'
-              className='text-gray-400 hover:text-gray-500'
+              className='text-secondary hover:text-gray-500'
             >
               <span className='sr-only'>{item.name}</span>
               <item.icon className='h-6 w-6' aria-hidden='true' />

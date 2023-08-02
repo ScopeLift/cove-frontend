@@ -1,8 +1,8 @@
-export const LoadingSpinner = () => {
+export const LoadingSpinner = ({ size = '24' }) => {
   return (
     <svg
       className='animate-spin'
-      style={{ animation: 'spin 3s linear infinite' }}
+      style={{ animation: 'spin 3s linear infinite', height: `${size}px`, width: `${size}px` }}
       xmlns='http://www.w3.org/2000/svg'
       fill='none'
       viewBox='0 0 24 24'

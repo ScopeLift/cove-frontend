@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import logo from 'public/logo.png';
-import { COMPANY_NAME } from '@/lib/constants';
+import { SITE_NAME } from '@/lib/constants';
 
 export const Header = () => {
   const currentPath = useRouter().pathname;
@@ -19,22 +19,10 @@ export const Header = () => {
   return (
     <div className='flex items-center justify-between px-4 py-6 sm:px-6 md:justify-start md:space-x-10'>
       <div>
-        <Link href='/' className='flex'>
-          <span className='sr-only'>{COMPANY_NAME}</span>
-          <Image
-            className='h-8 w-auto rounded-full bg-gray-600 p-1 sm:h-10'
-            src={logo}
-            alt='logo'
-          />
+        <Link href='/' className='flex items-center'>
+          <Image className='h-12 w-auto p-1 sm:h-16' src={logo} alt='logo' />
+          <span className='sr-only ml-4'>{SITE_NAME}</span>
         </Link>
-      </div>
-
-      <div className='md:flex md:flex-1 md:items-center md:justify-between'>
-        <div className='flex space-x-10'>
-          <NavLink path='/about' label='About' />
-          <NavLink path='/verify' label='Verify Contract' />
-          <NavLink path='/contract' label='View Contract' />
-        </div>
       </div>
     </div>
   );
