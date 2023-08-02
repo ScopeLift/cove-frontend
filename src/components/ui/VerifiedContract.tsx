@@ -4,6 +4,7 @@ import { useTheme } from 'next-themes';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-solidity';
 import { SuccessfulVerification } from '@/lib/cove-api';
+import { Tooltip } from './Tooltip';
 
 interface Props {
   data: SuccessfulVerification;
@@ -17,6 +18,8 @@ export const VerifiedContract = ({ data }: Props) => {
       Object.keys(data.compiler_info.settings.compilationTarget)[0]
     ];
 
+  const matchTypeTooltipText =
+    'A full match means the executable bytecode and metadata hash both matched, and a partial match mean the executable bytecode matched but the metadata hash did not.';
   const stats = [
     { name: 'Contract', value: contractName },
     { name: 'Language', value: data.compiler_info.language },
@@ -24,10 +27,13 @@ export const VerifiedContract = ({ data }: Props) => {
     {
       name: 'Creation Code Match Type',
       value: data.matches[defaultChain].creation_code_match_type,
+      tooltipText: matchTypeTooltipText,
     },
     {
       name: 'Deployed Code Match Type',
       value: data.matches[defaultChain].deployed_code_match_type,
+      id: 'deployed-code-match-type',
+      tooltipText: matchTypeTooltipText,
     },
   ];
 
@@ -113,10 +119,11 @@ export const VerifiedContract = ({ data }: Props) => {
             {stats.map((stat) => (
               <div key={stat.name} className='py-6'>
                 <p className='text-secondary text-sm font-medium leading-6'>{stat.name}</p>
-                <p className='mt-2 flex items-baseline gap-x-2'>
+                <p className='mt-2 flex items-center gap-x-2'>
                   <span className='text-primary text-3xl font-semibold tracking-tight'>
                     {stat.value}
                   </span>
+                  {stat.tooltipText && <Tooltip text={stat.tooltipText} />}
                 </p>
               </div>
             ))}
