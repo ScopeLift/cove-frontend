@@ -1,4 +1,4 @@
-export const LoadingSpinner = ({ size = '24' }) => {
+export const LoadingSpinner = ({ size = 24 }: { size?: number }) => {
   return (
     <svg
       className='animate-spin'
