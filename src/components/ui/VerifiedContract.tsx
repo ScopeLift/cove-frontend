@@ -12,7 +12,10 @@ interface Props {
 
 export const VerifiedContract = ({ data }: Props) => {
   // -------- Verification Data Formatting --------
-  const defaultChain = Object.keys(data.matches)[0];
+  const matchingChains = Object.keys(data.matches);
+
+  const numMatches = matchingChains.length;
+  const defaultChain = matchingChains[0];
   const contractName =
     data.compiler_info.settings.compilationTarget[
       Object.keys(data.compiler_info.settings.compilationTarget)[0]
@@ -104,10 +107,13 @@ export const VerifiedContract = ({ data }: Props) => {
           </div>
           <div className='ml-3'>
             <h3 className='text-sm font-medium text-green-800 dark:text-green-100'>
-              Verification successful!
+              Verification successful on {numMatches} chain{numMatches !== 1 && 's'}!
             </h3>
             <div className='mt-1 text-xs text-green-700 dark:text-green-200'>
-              <p>Showing data for {defaultChain}</p>
+              <p>Verified on {matchingChains.join(', ')}.</p>
+              <p className='mt-1'>
+                Showing data for <span className='font-bold'>{defaultChain}</span>.
+              </p>
             </div>
           </div>
         </div>
