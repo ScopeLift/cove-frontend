@@ -38,12 +38,12 @@ export type SuccessfulVerification = {
   creation_bytecode: {
     object: string;
     sourceMap: string;
-    linkReferences: {};
+    linkReferences: object;
   };
   deployed_bytecode: {
     object: string;
     sourceMap: string;
-    linkReferences: {};
+    linkReferences: object;
   };
   abi: Array<{
     inputs: Array<{
@@ -75,7 +75,7 @@ export type SuccessfulVerification = {
       compilationTarget: {
         [key: string]: string;
       };
-      libraries: {};
+      libraries: object;
     };
   };
   ast: {
@@ -86,6 +86,6 @@ export type SuccessfulVerification = {
     };
     nodeType: string;
     src: string;
-    nodes: Array<any>;
+    nodes: Array<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
   };
 };

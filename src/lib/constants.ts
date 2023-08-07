@@ -7,6 +7,8 @@ export const COMPANY_URL = 'http://covecontracts.com/';
 export const GITHUB_URL = 'https://github.com/ScpopeLift/cove-backend';
 export const TWITTER_URL = 'https://twitter.com/ScopeLift';
 
+export const IS_DEV_MODE = process.env.NODE_ENV === 'development';
+
 export const SUPPORTED_CHAINS = { arbitrum, gnosis, goerli, mainnet, optimism, polygon, sepolia };
 export const COVE_API_URL = process.env.NEXT_PUBLIC_COVE_API_URL || 'https://api.covecontracts.com';
 

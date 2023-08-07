@@ -7,7 +7,7 @@ import { FormErrorMessage } from '@/components/ui/FormErrorMessage';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { SelectChain } from '@/components/ui/SelectChain';
 import { VerifiedContract } from '@/components/ui/VerifiedContract';
-import { REQUIRED_FIELD_MSG, SUPPORTED_CHAINS } from '@/lib/constants';
+import { IS_DEV_MODE, REQUIRED_FIELD_MSG, SUPPORTED_CHAINS } from '@/lib/constants';
 import { COVE_API_URL } from '@/lib/constants';
 import { BuildFramework, SuccessfulVerification, VerifyData } from '@/lib/cove-api';
 
@@ -70,9 +70,9 @@ const shapeFormData = (data: TxFormValues): VerifyData => {
 
 export const Verify = () => {
   // -------- Form management --------
-  // Set this to true to pre-populate the form with test data
-  const DEV_MODE = true;
-  const defaultChain = DEV_MODE ? SUPPORTED_CHAINS.mainnet : SUPPORTED_CHAINS.mainnet;
+  const [selectedChains, setSelectedChains] = useState<Chain[]>([SUPPORTED_CHAINS.mainnet]);
+  const chains = Object.values(SUPPORTED_CHAINS);
+
   const defaultDevFormData: Partial<TxFormValues> = {
     repoUrl: 'https://github.com/gitcoinco/Alpha-Governor-Upgrade',
     repoCommit: '17f7717eec0604505da2faf3f65516a8619063a0',
@@ -88,8 +88,6 @@ export const Verify = () => {
   const defaultProdFormData: Partial<TxFormValues> = {
     creationTxHashes: [{ chainName: SUPPORTED_CHAINS.mainnet.name, hash: '' as `0x{string}` }],
   };
-  const [selectedChains, setSelectedChains] = useState<Chain[]>([defaultChain]);
-  const chains = Object.values(SUPPORTED_CHAINS);
 
   const {
     handleSubmit,
@@ -99,7 +97,7 @@ export const Verify = () => {
     formState: { errors },
   } = useForm<TxFormValues>({
     mode: 'onBlur',
-    defaultValues: DEV_MODE ? defaultDevFormData : defaultProdFormData,
+    defaultValues: IS_DEV_MODE ? defaultDevFormData : defaultProdFormData,
   });
 
   const { fields, append, remove } = useFieldArray({ name: 'creationTxHashes', control });
