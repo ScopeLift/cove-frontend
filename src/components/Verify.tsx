@@ -47,6 +47,7 @@ const CHAIN_NAMES_MAP: { [index: string]: string } = {
   'Arbitrum One': 'arbitrum',
   Gnosis: 'x_dai',
   'OP Mainnet': 'optimism',
+  'Avalanche C-Chain': 'avalanche'
 };
 
 const shapeFormData = (data: TxFormValues): VerifyData => {

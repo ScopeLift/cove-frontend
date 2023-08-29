@@ -18,6 +18,7 @@ export const SelectChain = ({ value, options, onChange }: Props) => {
     }
     if (chain.id === 42161) return 'https://icons.llamao.fi/icons/chains/rsz_arbitrum.jpg';
     if (chain.id === 10) return 'https://icons.llamao.fi/icons/chains/rsz_optimism.jpg';
+    if (chain.id === 43114) return 'https://icons.llamao.fi/icons/chains/rsz_avalanche.jpg';
     return `https://icons.llamao.fi/icons/chains/rsz_${chain.name.toLowerCase()}.jpg`;
   };
 
